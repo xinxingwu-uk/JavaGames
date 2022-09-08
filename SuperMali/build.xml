@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+
+<!-- ===================================================================== -->
+<!-- Developing Games in Java                                              -->
+<!-- Chapter 5: Creating a 2D Platform Game                                -->
+<!-- Ant 1.5 build file                                                    -->
+<!-- ===================================================================== -->
+
+<project name="chap05 - Creating a 2D Platform Game" default="build" basedir=".">
+
+    <property name="srcdir" value="src"/>
+    <property name="destdir" value="build"/>
+    <property name="docdir" value="doc"/>
+
+    <!-- Allow user to override properties without editing this file -->
+    <property file="${user.home}/.ant.properties" />
+
+
+    <!-- ================================================================= -->
+    <!-- Compile                                                           -->
+    <!-- ================================================================= -->
+    <target name="compile" description="Compiles the source code for this chapter">
+
+        <mkdir dir="${destdir}"/>
+
+        <javac srcdir="${srcdir}"
+               destdir="${destdir}"
+               debug="on" >
+
+            <include name="**/*.java"/>
+        </javac>
+
+    </target>
+
+
+    <!-- ================================================================= -->
+    <!-- Clean                                                             -->
+    <!-- ================================================================= -->
+    <target name="clean" description="Deletes the build directory for this chapter">
+        <delete dir="${destdir}" failonerror="false" />
+    </target>
+
+
+    <!-- =================================================================== -->
+    <!-- Build                                                               -->
+    <!-- =================================================================== -->
+    <target name="build" depends="clean, compile" description="Compiles and creates the Jar file">
+
+        <jar jarfile="${basedir}/tilegame.jar">
+            <manifest>
+                <attribute name="Main-Class"
+                    value="com.brackeen.javagamebook.tilegame.GameManager"/>
+            </manifest>
+
+            <fileset dir="${destdir}" includes="**/*.class"/>
+        </jar>
+
+    </target>
+
+
+    <!-- =================================================================== -->
+    <!-- Javadoc                                                             -->
+    <!-- =================================================================== -->
+    <target name="javadoc" description="Creates API documentation (JavaDocs) for this chapter">
+
+        <delete dir="${docdir}" failonerror="false"/>
+        <mkdir dir="${docdir}"/>
+
+        <javadoc
+            destdir="${docdir}"
+            access="private"
+            author="true"
+            version="true"
+            use="true">
+
+            <fileset dir="${srcdir}">
+                <include name="*.java"/>
+            </fileset>
+
+            <link href="http://java.sun.com/j2se/1.4.2/docs/api/"/>
+
+        </javadoc>
+
+    </target>
+
+</project>
